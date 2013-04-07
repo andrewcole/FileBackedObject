@@ -115,8 +115,9 @@ namespace Illallangi
         /// <returns>The object being serialized.</returns>
         public virtual T ToFile(string fileName)
         {
+            this.SetFileBackedSource(fileName);
             File.WriteAllText(fileName, this.ToString());
-            return this.SetFileBackedSource(fileName);
+            return (T)this;
         }
 
         /// <summary>
