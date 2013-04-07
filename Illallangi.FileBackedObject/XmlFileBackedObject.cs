@@ -36,7 +36,7 @@ namespace Illallangi
         {
             get
             {
-                return string.IsNullOrEmpty(this.currentFileBackedSource);
+                return !string.IsNullOrEmpty(this.currentFileBackedSource);
             }
         }
 
