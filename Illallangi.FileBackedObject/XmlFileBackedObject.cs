@@ -116,7 +116,7 @@ namespace Illallangi
         public virtual T ToFile(string fileName)
         {
             File.WriteAllText(fileName, this.ToString());
-            return (T)this;
+            return this.SetFileBackedSource(fileName);
         }
 
         /// <summary>
