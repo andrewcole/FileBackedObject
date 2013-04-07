@@ -2,12 +2,23 @@
 
 namespace Illallangi
 {
+    using System;
+
     /// <summary>
     /// An interface that allows serializing to and from a file.
     /// </summary>
     /// <typeparam name="T">The type to back.</typeparam>
     public interface IFileBackedObject<out T> where T : IFileBackedObject<T>
     {
+        /// <summary>
+        /// Serializes this T to its backing file.
+        /// </summary>
+        /// <returns>The object being serialized.</returns>
+        /// <exception cref="ArgumentException">
+        /// Throws if object is not backed by a file.
+        /// </exception>
+        T ToFile();
+        
         /// <summary>
         /// Serializes this T to a file.
         /// </summary>
