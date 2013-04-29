@@ -1,9 +1,7 @@
 ﻿// <copyright file="JsonFileBackedObject.cs" company="Illallangi Enterprises">Copyright © 2012 Illallangi Enterprises</copyright>
 
 using System.IO;
-using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Web.Script.Serialization;
 
 namespace Illallangi
 {
@@ -18,30 +16,12 @@ namespace Illallangi
         #region Non-Static Methods
 
         /// <summary>
-        /// Serializes this T to a XML string.
+        /// Serializes this T to a JSON string.
         /// </summary>
-        /// <returns>A XML string serialization of this T.</returns>
+        /// <returns>A JSON string serialization of this T.</returns>
         public override string ToString()
         {
-            var stringBuilder = new StringBuilder();
-
-            var xmlSerializerNamespaces = new XmlSerializerNamespaces();
-            xmlSerializerNamespaces.Add(string.Empty, string.Empty);
-
-            var xmlSerializer = new XmlSerializer(typeof(T));
-
-            var xmlWriterSettings = new XmlWriterSettings
-            {
-                OmitXmlDeclaration = true,
-                Indent = true
-            };
-
-            using (var xmlWriter = XmlWriter.Create(stringBuilder, xmlWriterSettings))
-            {
-                xmlSerializer.Serialize(xmlWriter, this, xmlSerializerNamespaces);
-                xmlWriter.Close();
-                return stringBuilder.ToString();
-            }
+            return new JavaScriptSerializer().Serialize(this);
         }
 
         #endregion
@@ -49,10 +29,10 @@ namespace Illallangi
         #region Static Methods
 
         /// <summary>
-        /// Deserializes the specified XML file to a T.
+        /// Deserializes the specified JSON file to a T.
         /// </summary>
         /// <param name="fileName">The file to deserialize.</param>
-        /// <returns>A T deserialized from the specified XML file.</returns>
+        /// <returns>A T deserialized from the specified JSON file.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Required to allow implementations of this class to be deserialized.")]
         public static T FromFile(string fileName)
         {
@@ -60,19 +40,14 @@ namespace Illallangi
         }
 
         /// <summary>
-        /// Deserializes a XML string to a T.
+        /// Deserializes a JSON string to a T.
         /// </summary>
         /// <param name="input">The string to deserialize.</param>
         /// <returns>A T deserialized from the specified string.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Required to allow implementations of this class to be deserialized.")]
         public static T FromString(string input)
         {
-            var ser = new XmlSerializer(typeof(T));
-            using (var sr = new StringReader(input))
-            {
-                var ret = (T)ser.Deserialize(sr);
-                return ret;
-            }
+            return new JavaScriptSerializer().Deserialize<T>(input);
         }
 
         #endregion
