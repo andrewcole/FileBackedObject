@@ -1,7 +1,6 @@
-﻿// <copyright file="XmlFileBackedObject.cs" company="Illallangi Enterprises">Copyright © 2012 Illallangi Enterprises</copyright>
+﻿// <copyright file="JsonFileBackedObject.cs" company="Illallangi Enterprises">Copyright © 2012 Illallangi Enterprises</copyright>
 
 using System.IO;
-using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -9,10 +8,10 @@ using System.Xml.Serialization;
 namespace Illallangi
 {
     /// <summary>
-    /// An class that allows serializing to and from a XML file.
+    /// An class that allows serializing to and from a JSON file.
     /// </summary>
     /// <typeparam name="T">The type to back.</typeparam>
-    public class XmlFileBackedObject<T> : FileBackedObject<T> where T : XmlFileBackedObject<T>
+    public class JsonFileBackedObject<T> : FileBackedObject<T> where T : JsonFileBackedObject<T>
     {
         #region Methods
 
@@ -24,14 +23,24 @@ namespace Illallangi
         /// <returns>A XML string serialization of this T.</returns>
         public override string ToString()
         {
-            var ser = new DataContractJsonSerializer(typeof(T));
+            var stringBuilder = new StringBuilder();
 
-            using (var stream = new MemoryStream())
-            using (var sr = new StreamReader(stream))
+            var xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            xmlSerializerNamespaces.Add(string.Empty, string.Empty);
+
+            var xmlSerializer = new XmlSerializer(typeof(T));
+
+            var xmlWriterSettings = new XmlWriterSettings
             {
-                ser.WriteObject(stream, this);
-                stream.Position = 0;
-                return sr.ReadToEnd();
+                OmitXmlDeclaration = true,
+                Indent = true
+            };
+
+            using (var xmlWriter = XmlWriter.Create(stringBuilder, xmlWriterSettings))
+            {
+                xmlSerializer.Serialize(xmlWriter, this, xmlSerializerNamespaces);
+                xmlWriter.Close();
+                return stringBuilder.ToString();
             }
         }
 
@@ -58,10 +67,10 @@ namespace Illallangi
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Required to allow implementations of this class to be deserialized.")]
         public static T FromString(string input)
         {
-            var ser = new DataContractJsonSerializer(typeof(T));
-            using (var sr = new StreamReader(input))
+            var ser = new XmlSerializer(typeof(T));
+            using (var sr = new StringReader(input))
             {
-                var ret = (T)ser.ReadObject(sr.BaseStream);
+                var ret = (T)ser.Deserialize(sr);
                 return ret;
             }
         }
