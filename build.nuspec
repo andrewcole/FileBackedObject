@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Illallangi.FileBackedObject</id>
+    <version>$version$</version>
+    <title>File Backed Object</title>
+    <authors>Illallangi Enterprises</authors>
+    <owners>Illallangi Enterprises</owners>
+    <projectUrl>http://illallangi.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An easy library to persist a model to an XML file</description>
+    <copyright>Copyright 2013</copyright>
+    <tags>DAL</tags>
+s  </metadata>
+</package>
