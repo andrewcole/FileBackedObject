@@ -1,52 +1,23 @@
-#OS junk files
-[Tt]humbs.db
-*.DS_Store
-
-#Visual Studio files
-*.[Oo]bj
-*.exe
-*.pdb
+[Oo]bj/
+[Bb]in/
 *.user
-*.aps
-*.pch
+/TestResults
 *.vspscc
 *.vssscc
-*_i.c
-*_p.c
-*.ncb
+deploy
+deploy/*
 *.suo
-*.tlb
-*.tlh
-*.bak
-*.[Cc]ache
-*.ilk
-*.log
-*.lib
-*.sbr
-*.sdf
-*.docstates
-ipch/
-obj/
-[Bb]in
-[Dd]ebug*/
-[Rr]elease*/
-[Pp]ublish*/
-Ankh.NoLoad
+*.cache
+packages/
+msbuild.log
+artifacts/log
+artifacts/
+post-build*
+_ReSharper.*
+deploy-to-ec2*
+TestResults/
+build/
 
-#Tooling
-_ReSharper*/
-*.resharper
-[Tt]est[Rr]esult*
-*.dotCover
 
-#Project files
-[Bb]uild/
-
-#Subversion files
-.svn
-
-# Office Temp Files
-~$*
-
-# Custom
-*.private
+CommonAssemblyInfo.cs
+Thumbs.db
